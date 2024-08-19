@@ -1,0 +1,30 @@
+/* resources/css/custom.css */
+
+body {
+    background-color: #f8f9fa; /* Warna latar belakang utama */
+}
+
+.navbar {
+    background-color: #007bff; /* Warna latar belakang navbar */
+    border-bottom: 2px solid #0056b3; /* Border bawah navbar */
+}
+
+.card {
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff; /* Warna latar belakang card */
+}
+
+.card-header {
+    background-color: #e9ecef; /* Warna latar belakang header card */
+    border-bottom: 1px solid #dee2e6;
+}
+
+.card-footer {
+    background-color: #f1f1f1; /* Warna latar belakang footer card */
+}
+
+main {
+    background-color: #ffffff; /* Warna latar belakang area konten utama */
+    padding: 20px;
+}
