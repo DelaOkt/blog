@@ -32,18 +32,19 @@ class RegisterController extends Controller
     }
 
     protected function create(array $data)
-    {
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'role' => $data['role'], // Menambahkan role
-        ]);
+{
+    // Buat user baru
+    $user = User::create([
+        'name' => $data['name'],
+        'email' => $data['email'],
+        'password' => Hash::make($data['password']),
+        'role' => $data['role'], // Menyimpan role
+    ]);
 
-        Auth::login($user);
+    // Redirect ke halaman login
+    return redirect()->route('login')->with('success', 'Registrasi berhasil, silakan login.');
+}
 
-        return $user;
-    }
 
     public function register(Request $request)
     {
@@ -52,6 +53,10 @@ class RegisterController extends Controller
         $user = $this->create($request->all());
 
     return redirect('/login'); // Arahkan ke halaman login setelah registrasi
+}
+protected function redirectPath()
+{
+    return route('login'); // redirect ke login
 }
 
 }

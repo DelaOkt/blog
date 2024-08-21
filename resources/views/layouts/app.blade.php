@@ -26,91 +26,49 @@
         <!-- Navbar -->
         <nav class="navbar navbar-expand-md navbar-dark bg-primary shadow-sm">
             <div class="container">
-                <!-- Home Button -->
-                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
-                    <i class="fas fa-home"></i> <!-- Ikon Rumah -->
+                <a class="navbar-brand" href="{{ url('/') }}">BLOG</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
-                <h1 class="text-white ms-3">BLOG</h1>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        @guest
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">Login</a>
+                            </li>
+                            <!-- Hapus Register -->
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/') }}">
+                                    @if(auth()->check())
+                                        @if(auth()->user()->isAdmin())
+                                            Admin
+                                        @else
+                                            Pengguna
+                                        @endif
+                                    @endif
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('categories.index') }}">Kategori</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('posts.index') }}">Post</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('users.index') }}">Akun</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </li>
+                        @endguest
+                    </ul>
+                </div>
             </div>
         </nav>
-
-        <!-- Sidebar Menu -->
-        <div class="offcanvas offcanvas-start bg-primary text-white" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasMenuLabel">Menu</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <ul class="navbar-nav">
-                    <!-- Menampilkan peran pengguna -->
-                    <li class="nav-item">
-    <a class="nav-link text-white" href="#">
-        @if(auth()->check())
-            @if(auth()->user()->isAdmin())
-                <i class="fas fa-crown"></i> <!-- Ikon Admin -->
-                Admin
-            @else
-                <i class="fas fa-user"></i> <!-- Ikon Pengguna -->
-                Pengguna
-            @endif
-        @endif
-    </a>
-</li>
-
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ url('/') }}">
-                            <i class="fas fa-home"></i> <!-- Ikon Rumah -->
-                            Beranda
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ route('categories.index') }}">
-                            <i class="fas fa-list"></i> <!-- Ikon Daftar -->
-                            Kategori
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ route('posts.index') }}">
-                            <i class="fas fa-pen"></i> <!-- Ikon Post -->
-                            Post
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ route('users.index') }}">
-                            <i class="fas fa-users"></i> <!-- Ikon Pengguna -->
-                            Akun
-                        </a>
-                    </li>
-
-                    @guest
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="{{ route('login') }}">
-                                <i class="fas fa-sign-in-alt"></i> <!-- Ikon Login -->
-                                Login
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="{{ route('register') }}">
-                                <i class="fas fa-user-plus"></i> <!-- Ikon Register -->
-                                Register
-                            </a>
-                        </li>
-                    @else
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="#" 
-                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <i class="fas fa-sign-out-alt"></i> <!-- Ikon Logout -->
-                                Logout
-                            </a>
-                        </li>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
-                        
-                    @endguest
-                </ul>
-            </div>
-        </div>
 
         <!-- Content -->
         <main class="py-4">

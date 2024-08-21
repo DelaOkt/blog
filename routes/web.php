@@ -37,7 +37,7 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 // Route::put('/users/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
 // Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
 Route::get('/posts/{slug}', [PostController::class, 'show'])->name('posts.show');
-Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
+// Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
 Route::get('/category/{slug}', [HomeController::class, 'showPostsByCategory'])->name('category.posts');
 Route::get('/kategori/{slug}', [CategoryController::class, 'showPostsByCategory'])->name('category.posts');
 Route::get('/category/{slug}', [CategoryController::class, 'show'])->name('category.show');
