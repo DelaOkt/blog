@@ -26,7 +26,7 @@
         <!-- Navbar -->
         <nav class="navbar navbar-expand-md navbar-dark bg-primary shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">BLOG</a>
+                <a class="navbar-brand">BLOG</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -36,28 +36,30 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">Login</a>
                             </li>
-                            <!-- Hapus Register -->
                         @else
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/') }}">
-                                    @if(auth()->check())
-                                        @if(auth()->user()->isAdmin())
-                                            Admin
-                                        @else
-                                            Pengguna
-                                        @endif
-                                    @endif
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('categories.index') }}">Kategori</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('posts.index') }}">Post</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('users.index') }}">Akun</a>
-                            </li>
+                            @if(auth()->user()->isAdmin())
+                                <!-- Admin Menu -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ url('/') }}">Beranda</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('categories.index') }}">Kategori</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('posts.index') }}">Post</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('users.index') }}">Akun</a>
+                                </li>
+                            @else
+                                <!-- User Menu -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ url('/') }}">Beranda</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('posts.index') }}">Posts</a>
+                                </li>
+                            @endif
                             <li class="nav-item">
                                 <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

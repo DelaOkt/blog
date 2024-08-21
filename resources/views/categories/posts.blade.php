@@ -2,13 +2,7 @@
 
 @section('content')
 <div class="container">
-    <!-- Jumbotron Header -->
-    <div class="jumbotron jumbotron-fluid bg-primary text-white text-center py-5 mb-4">
-        <div class="container">
-            <h1 class="display-4">Selamat Datang di Blog Kami</h1>
-            <p class="lead">Temukan informasi menarik dan terbaru di sini</p>
-        </div>
-    </div>
+    <h1>Posts di Kategori: {{ $category->name }}</h1>
 
     <!-- Blog Posts -->
     <div class="row">

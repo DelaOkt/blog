@@ -2,27 +2,36 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Post extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'title',
+        'slug',
+        'content',
+        'category_id',
+        'file', // Tambahkan ini jika Anda menyimpan file
+        'user_id', // Menambahkan kolom user_id
+    ];
 
-    protected $fillable = ['title', 'slug', 'content', 'category_id', 'user_id', 'date'];
-    // app/Models/Post.php
-protected $dates = ['date'];
+    // Mutator untuk membuat slug otomatis
+    public function setTitleAttribute($value)
+    {
+        $this->attributes['title'] = $value;
+        $this->attributes['slug'] = Str::slug($value);
+    }
 
-
-    public function category() {
+    // Definisikan relasi dengan Category
+    public function category()
+    {
         return $this->belongsTo(Category::class);
     }
 
-    public function user() {
+    // Definisikan relasi dengan User
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
-    public function posts()
-{
-    return $this->hasMany(Post::class);
-}
 }

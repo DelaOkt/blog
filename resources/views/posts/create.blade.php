@@ -1,11 +1,10 @@
-<!-- resources/views/posts/create.blade.php -->
 @extends('layouts.app')
 
 @section('content')
 <div class="container">
     <h1>Create Post</h1>
 
-    <form action="{{ route('posts.store') }}" method="POST">
+    <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
@@ -28,8 +27,12 @@
             </select>
         </div>
         <div class="mb-3">
-            <label for="date" class="form-label">Date</label>
-            <input type="date" class="form-control" id="date" name="date" required>
+    <label for="date" class="form-label">Date</label>
+    <input type="date" class="form-control" id="date" name="date" required>
+</div>
+        <div class="mb-3">
+            <label for="file" class="form-label">Upload File (optional)</label>
+            <input type="file" class="form-control" id="file" name="file">
         </div>
         <button type="submit" class="btn btn-primary">Create</button>
     </form>

@@ -8,6 +8,12 @@
                 <div class="card-header">{{ __('Posts') }}</div>
 
                 <div class="card-body">
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
                     <a href="{{ route('posts.create') }}" class="btn btn-primary mb-3">Create New Post</a>
 
                     @if ($posts->count())
@@ -16,6 +22,7 @@
                                 <tr>
                                     <th>Title</th>
                                     <th>Category</th>
+                                    <th>File</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -24,6 +31,13 @@
                                     <tr>
                                         <td>{{ $post->title }}</td>
                                         <td>{{ $post->category->name }}</td>
+                                        <td>
+                                            @if ($post->file)
+                                                <a href="{{ asset('uploads/' . $post->file) }}" target="_blank">{{ $post->file }}</a>
+                                            @else
+                                                No file
+                                            @endif
+                                        </td>
                                         <td>
                                             <a href="{{ route('posts.show', $post->slug) }}" class="btn btn-info btn-sm">View</a>
                                             <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-warning btn-sm">Edit</a>
@@ -40,9 +54,6 @@
                     @else
                         <p>No posts found.</p>
                     @endif
-                    @foreach ($posts as $post)
-    <h2><a href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a></h2>
-@endforeach
                 </div>
             </div>
         </div>

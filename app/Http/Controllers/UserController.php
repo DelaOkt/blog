@@ -50,29 +50,28 @@ class UserController extends Controller
         // Redirect ke halaman index users dengan pesan sukses
         return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
 {
+    $user = User::findOrFail($id);
+    
     $request->validate([
         'name' => 'required|string|max:255',
         'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-        'role' => 'required', // Validasi username
-        'password' => 'nullable|string|min:8|confirmed', // Validasi password
+        'password' => 'nullable|string|min:8|confirmed',
     ]);
-
-    // Update user details
-    $user->name = $request->name;
-    $user->email = $request->email;
-    $user->role = $request->role;
-
-    // Jika password diisi, update password juga
+    
+    $user->name = $request->input('name');
+    $user->email = $request->input('email');
+    
     if ($request->filled('password')) {
-        $user->password = Hash::make($request->password);
+        $user->password = bcrypt($request->input('password'));
     }
-
+    
     $user->save();
 
     return redirect()->route('users.index')->with('success', 'User updated successfully.');
 }
+
 
 public function destroy(User $user)
 {

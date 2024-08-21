@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Edit Post') }}</div>
 
                 <div class="card-body">
-                    <form action="{{ route('posts.update', $post->id) }}" method="POST">
+                    <form action="{{ route('posts.update', $post->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
@@ -30,6 +30,16 @@
                         <div class="mb-3">
                             <label for="content" class="form-label">Content</label>
                             <textarea name="content" id="content" class="form-control">{{ $post->content }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="file" class="form-label">Upload File (optional)</label>
+                            <input type="file" class="form-control" id="file" name="file">
+                            @if ($post->file)
+                                <div class="mt-2">
+                                    <p>Current file:</p>
+                                    <a href="{{ asset('uploads/' . $post->file) }}" target="_blank">{{ $post->file }}</a>
+                                </div>
+                            @endif
                         </div>
                         <button class="btn btn-primary">Update</button>
                     </form>

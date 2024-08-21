@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class HomeController extends Controller
 {
@@ -26,6 +27,10 @@ class HomeController extends Controller
     $user = auth()->user(); // ambil pengguna yang sedang login
 
     return view('home', ['user' => $user]);
-}
 
+    $categories = Category::all();
+    $posts = Post::latest()->get(); // Ambil semua post
+
+        return view('home', compact('categories', 'posts'));
+    }
 }

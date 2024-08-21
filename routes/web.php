@@ -37,16 +37,36 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 // Route::put('/users/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
 // Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
 Route::get('/posts/{slug}', [PostController::class, 'show'])->name('posts.show');
+
 // Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
 Route::get('/category/{slug}', [HomeController::class, 'showPostsByCategory'])->name('category.posts');
 Route::get('/kategori/{slug}', [CategoryController::class, 'showPostsByCategory'])->name('category.posts');
 Route::get('/category/{slug}', [CategoryController::class, 'show'])->name('category.show');
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [RegisterController::class, 'register']);
+Route::get('/category/{slug}', [CategoryController::class, 'showPostsByCategory'])->name('category.posts');
+Route::get('categories/{slug}/posts', [CategoryController::class, 'showPostsByCategory'])->name('category.posts');
+
+// Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+// Route::post('/register', [RegisterController::class, 'register']);
 // Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'create'])->name('register');
 // Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'store']);
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+});
+// web.php
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+    
+    Route::group(['middleware' => 'admin'], function () {
+        Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    });
+});
+Route::get('/categories/check-slug', [CategoryController::class, 'checkSlug'])->name('categories.checkSlug');
+Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+    // Tambahkan route lainnya
 });

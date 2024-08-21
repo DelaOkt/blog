@@ -17,9 +17,15 @@
                     </p>
                     <p>{{ $post->content }}</p>
 
+                    @if ($post->file)
+                        <div class="mt-3">
+                            <p>Uploaded File:</p>
+                            <a href="{{ asset('uploads/' . $post->file) }}" target="_blank">{{ $post->file }}</a>
+                        </div>
+                    @endif
+
                     <!-- Tombol untuk kembali ke beranda -->
                     <a href="{{ route('home') }}" class="btn btn-secondary">Kembali ke Beranda</a>
-                    <a href="{{ route('posts.index') }}" class="btn btn-secondary">Halaman Post</a>
                 </div>
             </div>
         </div>

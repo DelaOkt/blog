@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up()
 {
-    Schema::table('users', function (Blueprint $table) {
-        $table->enum('role', ['user', 'admin'])->change(); // Nilai defaultnya 'user'
+    Schema::table('categories', function (Blueprint $table) {
+        $table->string('slug')->unique()->after('name');
     });
 }
+
 
 public function down()
 {
-    Schema::table('users', function (Blueprint $table) {
-        $table->dropColumn('role');
+    Schema::table('categories', function (Blueprint $table) {
+        $table->dropColumn('slug');
     });
 }
 
-    
 };

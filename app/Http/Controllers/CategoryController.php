@@ -45,17 +45,8 @@ class CategoryController extends Controller
         $category->delete();
         return redirect()->route('categories.index');
     }
-    public function showPostsByCategory($slug) {
-        // Temukan kategori berdasarkan slug
-        $category = Category::where('slug', $slug)->firstOrFail();
 
-        // Ambil postingan yang termasuk dalam kategori tersebut
-        $posts = Post::where('category_id', $category->id)->with('user')->get();
-
-        // Tampilkan tampilan dengan postingan dan kategori
-        return view('categories.show', compact('posts', 'category'));
-    }
-    // CategoryController.php
+    // Menampilkan posts berdasarkan slug kategori
     public function show($slug)
     {
         $category = Category::where('slug', $slug)->firstOrFail();
@@ -63,4 +54,12 @@ class CategoryController extends Controller
         
         return view('categories.show', compact('category', 'posts'));
     }
+    public function showPostsByCategory($slug)
+{
+    $category = Category::where('slug', $slug)->firstOrFail();
+    $posts = Post::where('category_id', $category->id)->get();
+
+    return view('categories.posts', compact('category', 'posts'));
+}
+
 }
