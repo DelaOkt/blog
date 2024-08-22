@@ -27,6 +27,38 @@
                             {{ $user->email }}
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <strong>Role:</strong>
+                        </div>
+                        <div class="col-md-8">
+                            {{ $user->role }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <strong>Last Updated:</strong>
+                        </div>
+                        <div class="col-md-8">
+                            {{ $user->updated_at->format('d M Y H:i') }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <strong>Number of Posts:</strong>
+                        </div>
+                        <div class="col-md-8">
+                            {{ $user->posts->count() }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <strong>Account Status:</strong>
+                        </div>
+                        <div class="col-md-8">
+                            {{ $user->status == 1 ? 'Active' : 'Inactive' }}
+                        </div>
+                    </div>
                 </div>
                 <div class="card-footer text-end">
                     <a href="{{ route('users.index') }}" class="btn btn-secondary">Back to List</a>

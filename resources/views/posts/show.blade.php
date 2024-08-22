@@ -15,6 +15,9 @@
                     <p class="text-muted">
                         Kategori: <a href="{{ route('category.posts', $post->category->slug) }}">{{ $post->category->name }}</a>
                     </p>
+                    <p class="text-muted">
+                        Terakhir diperbarui pada {{ $post->updated_at->format('d M Y H:i') }}
+                    </p>
                     <p>{{ $post->content }}</p>
 
                     @if ($post->file)
