@@ -2,35 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use Illuminate\Http\Request;
-use App\Models\Category;
+use App\Models\Post;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index()
     {
-        // Kirim data ke view beranda
-    $posts = Post::with('category', 'user')->latest()->get();
-    return view('home', compact('posts'));
-  
-    $user = auth()->user(); // ambil pengguna yang sedang login
+        // Mendapatkan pengguna yang sedang login
+        $user = auth()->user();
+        
+        // Jika pengguna tidak login, redirect ke halaman login atau tampilkan pesan error
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'You must be logged in to view this page.');
+        }
 
-    return view('home', ['user' => $user]);
+        // Jika pengguna adalah admin, tampilkan semua post
+        if ($user->isAdmin()) {
+            $posts = Post::all();
+        } else {
+            // Jika pengguna adalah user, tampilkan hanya post milik pengguna
+            $posts = Post::where('user_id', $user->id)->get();
+        }
 
-    $categories = Category::all();
-    $posts = Post::latest()->get(); // Ambil semua post
-
-        return view('home', compact('categories', 'posts'));
+        return view('home', compact('posts'));
     }
 }
+
