@@ -12,7 +12,7 @@
 
     <!-- Blog Posts -->
     <div class="row">
-        @forelse($posts as $post)
+        @foreach($posts as $post)
             <div class="col-md-6 mb-4">
                 <div class="card h-100 shadow-sm">
                     @if ($post->file)
@@ -31,9 +31,7 @@
                     </div>
                 </div>
             </div>
-        @empty
-            <p>Tidak ada post untuk ditampilkan.</p>
-        @endforelse
+        @endforeach
     </div>
 </div>
 @endsection

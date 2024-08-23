@@ -16,20 +16,20 @@
                             <input type="text" name="title" id="title" class="form-control" value="{{ $post->title }}">
                         </div>
                         <div class="mb-3">
+                            <label for="slug" class="form-label">Slug</label>
+                            <input type="text" name="slug" id="slug" class="form-control" value="{{ $post->slug }}" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="content" class="form-label">Content</label>
+                            <textarea name="content" id="content" class="form-control">{{ $post->content }}</textarea>
+                        </div>
+                        <div class="mb-3">
                             <label for="category_id" class="form-label">Category</label>
                             <select name="category_id" id="category_id" class="form-control">
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}" {{ $post->category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                 @endforeach
                             </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="slug" class="form-label">Slug</label>
-                            <input type="text" name="slug" id="slug" class="form-control" value="{{ $post->slug }}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="content" class="form-label">Content</label>
-                            <textarea name="content" id="content" class="form-control">{{ $post->content }}</textarea>
                         </div>
                         <div class="mb-3">
                             <label for="file" class="form-label">Upload File (optional)</label>
@@ -48,8 +48,9 @@
         </div>
     </div>
 </div>
+
 @if ($errors->any())
-    <div class="alert alert-danger">
+    <div class="alert alert-danger mt-3">
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -58,4 +59,14 @@
     </div>
 @endif
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#title').on('input', function() {
+            var title = $(this).val();
+            var slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+            $('#slug').val(slug);
+        });
+    });
+</script>
 @endsection

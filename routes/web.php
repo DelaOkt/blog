@@ -29,6 +29,7 @@ Route::resource('users', UserController::class);
 
 Auth::routes();
 // Dalam web.php
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index'])->middleware('auth')->name('home');
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/posts/{slug}', [PostController::class, 'show'])->name('posts.show');

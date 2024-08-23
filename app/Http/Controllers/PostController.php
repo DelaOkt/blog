@@ -11,18 +11,17 @@ class PostController extends Controller
 {
     // Menampilkan daftar post
     public function index()
-{
-    if (auth()->user()->isAdmin()) {
-        // Admin dapat melihat semua post
-        $posts = Post::all();
-    } else {
-        // User biasa hanya melihat post yang mereka miliki
-        $posts = Post::where('user_id', auth()->id())->get();
+    {
+        if (auth()->user()->isAdmin()) {
+            // Admin dapat melihat semua post
+            $posts = Post::all();
+        } else {
+            // User biasa hanya melihat post yang mereka miliki
+            $posts = Post::where('user_id', auth()->id())->get();
+        }
+
+        return view('posts.index', compact('posts'));
     }
-
-    return view('posts.index', compact('posts'));
-}
-
 
     // Menampilkan halaman untuk membuat post baru
     public function create()
@@ -33,35 +32,35 @@ class PostController extends Controller
 
     // Menyimpan post baru
     public function store(Request $request)
-{
-    $request->validate([
-        'title' => 'required',
-        'slug' => 'required|unique:posts',
-        'content' => 'required',
-        'category_id' => 'required',
-        'date' => 'required|date', // Validasi untuk tanggal
-        'file' => 'nullable|mimes:jpg,png,pdf,doc,docx|max:2048',
-    ]);
+    {
+        $request->validate([
+            'title' => 'required',
+            'slug' => 'required|unique:posts',
+            'content' => 'required',
+            'category_id' => 'required',
+            'date' => 'required|date', // Validasi untuk tanggal
+            'file' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validasi hanya gambar
+        ]);
 
-    $post = new Post();
-    $post->title = $request->title;
-    $post->slug = $request->slug;
-    $post->content = $request->content;
-    $post->category_id = $request->category_id;
-    $post->user_id = auth()->user()->id;
-    $post->date = $request->date; // Menyimpan tanggal
+        $post = new Post();
+        $post->title = $request->title;
+        $post->slug = $request->slug;
+        $post->content = $request->content;
+        $post->category_id = $request->category_id;
+        $post->user_id = auth()->user()->id;
+        $post->date = $request->date; // Menyimpan tanggal
 
-    // File upload logic
-    if ($request->hasFile('file')) {
-        $fileName = time().'.'.$request->file->extension();
-        $request->file->move(public_path('uploads'), $fileName);
-        $post->file = $fileName;
+        // File upload logic
+        if ($request->hasFile('file')) {
+            $fileName = time().'.'.$request->file->extension();
+            $request->file->move(public_path('uploads'), $fileName);
+            $post->file = $fileName;
+        }
+
+        $post->save();
+
+        return redirect()->route('posts.index')->with('success', 'Post created successfully!');
     }
-
-    $post->save();
-
-    return redirect()->route('posts.index')->with('success', 'Post created successfully!');
-}
 
     // Menampilkan halaman edit post
     public function edit(Post $post)
@@ -72,41 +71,40 @@ class PostController extends Controller
 
     // Mengupdate post
     public function update(Request $request, Post $post)
-{
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'category_id' => 'required|exists:categories,id',
-        'slug' => 'required|string|max:255|unique:posts,slug,' . $post->id,
-        'content' => 'required',
-        'file' => 'nullable|mimes:jpg,png,doc,pdf|max:2048',
-    ]);
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'slug' => 'required|string|max:255|unique:posts,slug,' . $post->id,
+            'content' => 'required',
+            'file' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validasi hanya gambar
+        ]);
 
-    $post->title = $request->input('title');
-    $post->category_id = $request->input('category_id');
-    $post->slug = $request->input('slug');
-    $post->content = $request->input('content');
+        $post->title = $request->input('title');
+        $post->category_id = $request->input('category_id');
+        $post->slug = $request->input('slug');
+        $post->content = $request->input('content');
 
-    if ($request->hasFile('file')) {
-        $file = $request->file('file');
-        $filename = time() . '.' . $file->getClientOriginalExtension();
-        $file->move(public_path('uploads'), $filename);
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads'), $filename);
 
-        // Hapus file lama jika ada
-        if ($post->file) {
-            $oldFile = public_path('uploads/' . $post->file);
-            if (file_exists($oldFile)) {
-                unlink($oldFile);
+            // Hapus file lama jika ada
+            if ($post->file) {
+                $oldFile = public_path('uploads/' . $post->file);
+                if (file_exists($oldFile)) {
+                    unlink($oldFile);
+                }
             }
+
+            $post->file = $filename;
         }
 
-        $post->file = $filename;
+        $post->save();
+
+        return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
     }
-
-    $post->save();
-
-    return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
-}
-
 
     // Menghapus post
     public function destroy(Post $post)
@@ -122,9 +120,8 @@ class PostController extends Controller
 
     // Menampilkan detail post
     public function show($slug)
-{
-    $post = Post::where('slug', $slug)->firstOrFail();
-    return view('posts.show', compact('post'));
-}
-
+    {
+        $post = Post::where('slug', $slug)->firstOrFail();
+        return view('posts.show', compact('post'));
+    }
 }

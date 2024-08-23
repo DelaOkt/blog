@@ -32,6 +32,10 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
+                        <!-- Menu Beranda akan selalu tampil -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/') }}">Beranda</a>
+                        </li>
                         @guest
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">Login</a>
@@ -39,9 +43,6 @@
                         @else
                             @if(auth()->user()->isAdmin())
                                 <!-- Admin Menu -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ url('/') }}">Beranda</a>
-                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('categories.index') }}">Kategori</a>
                                 </li>
@@ -53,9 +54,6 @@
                                 </li>
                             @else
                                 <!-- User Menu -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ url('/') }}">Beranda</a>
-                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('posts.index') }}">Posts</a>
                                 </li>
